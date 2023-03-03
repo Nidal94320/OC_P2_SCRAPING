@@ -1,4 +1,4 @@
-""" P2, part2 : etracts all books from one category """
+""" P2, part2 : extracts all books from one category """
 from requests import get
 from bs4 import BeautifulSoup
 
