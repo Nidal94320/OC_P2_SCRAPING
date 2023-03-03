@@ -1,7 +1,9 @@
 from bs4 import BeautifulSoup
 
-""" Transform html data into list  """
+from .html_Extractor import html_Extractor
 
+""" Transforms book's html data into list
+    list_Transformer(soup, url) """
 
 def extract_category(soup):
     category = soup.find_all("a", href=True)
@@ -87,3 +89,70 @@ def list_Transformer(soup, url):
         image_url,
     ]
     return book
+
+""" Extracts and Transforms book's html data into list
+    ET_book(url) """
+
+def ET_book_data(url):
+    soup = html_Extractor(url)
+    book_data = list_Transformer(soup, url)
+    return book_data
+
+""" Checks, Extracts and Transforms category pages into list
+    ET_category_pages(category_url)"""
+
+
+def ET_category_pages(category_url):
+
+    soup=html_Extractor(category_url)
+
+    list_pages=[]
+
+    list_pages.append(category_url)
+
+    while soup.find("li", class_="next"):
+
+        next_page = soup.find("li", class_="next").find("a")["href"]
+    
+        next_page_url = category_url[0:-10] + next_page
+    
+        list_pages.append(next_page_url)
+    
+        soup = html_Extractor(next_page_url)
+
+    return list_pages
+
+""" Extracts and Transforms books url of a category into list
+    ET_books_url(list_pages)"""
+
+def ET_books_url(list_pages):
+    books_url=[]
+    for page in list_pages:
+        soup=html_Extractor(page)
+        all_a=soup.find_all("a", title=True)
+        for a in all_a:
+            books_url.append(a["href"].replace("../../..", "https://books.toscrape.com/catalogue"))
+    return books_url
+
+""" Extracts and Transforms data from books url into list
+    ET_books_data(books_url)"""
+
+HEADER = [
+    "category",
+    "title",
+    "product_description",
+    "universal_product_code",
+    "number_available",
+    "review_rating",
+    "price_excluding_tax",
+    "price_including_tax",
+    "product_page_url",
+    "image_url",
+]
+
+def ET_books_data(books_url):
+    books_data=[]
+    books_data.append(HEADER)
+    for book_page in books_url:
+        books_data.append(ET_book_data(book_page))
+    return books_data
