@@ -1,5 +1,3 @@
-from bs4 import BeautifulSoup
-
 from .html_Extractor import html_Extractor
 
 """ Transforms book's html data into list
@@ -12,30 +10,25 @@ def extract_category(soup):
             category = balise.string
     return category
 
-
 def extract_universal_product_code(soup):
     all_td = soup.find_all("td")
     universal_product_code = all_td[0].string
     return universal_product_code
-
 
 def extract_price_excluding_tax(soup):
     all_td = soup.find_all("td")
     price_excluding_tax = all_td[2].string.replace("£", "")
     return price_excluding_tax
 
-
 def extract_price_including_tax(soup):
     all_td = soup.find_all("td")
     price_including_tax = all_td[3].string.replace("£", "")
     return price_including_tax
 
-
 def extract_number_available(soup):
     all_td = soup.find_all("td")
     number_available = all_td[5].string
     return number_available
-
 
 def extract_review_rating(soup):
     review_rating = soup.find("p", class_="star-rating")
@@ -51,6 +44,14 @@ def extract_review_rating(soup):
         review_rating = "5"
     return review_rating
 
+""" Some books haven't product description !"""
+
+def extract_product_description(find_product_description):
+    if find_product_description==True:
+        product_description=find_product_description.string
+    else:
+        product_description=""
+    return product_description
 
 def list_Transformer(soup, url):
 
@@ -58,7 +59,7 @@ def list_Transformer(soup, url):
 
     title = soup.find("li", class_="active").string
 
-    product_description = soup.find("p", class_=False).string
+    product_description=extract_product_description(soup.find("p", class_=False))
 
     universal_product_code = extract_universal_product_code(soup)
 
@@ -100,7 +101,6 @@ def ET_book_data(url):
 
 """ Checks, Extracts and Transforms category pages into list
     ET_category_pages(category_url)"""
-
 
 def ET_category_pages(category_url):
 
@@ -156,3 +156,16 @@ def ET_books_data(books_url):
     for book_page in books_url:
         books_data.append(ET_book_data(book_page))
     return books_data
+
+""" Extracts and Transforms catogories url into list 
+    ET_categories_url(home_page_url)"""
+
+def ET_categories_url(home_page_url):
+    soup=html_Extractor(home_page_url)
+    all_a=soup.find_all("a")
+    categories_url=[]
+    for a in all_a:
+        if(a["href"].startswith("catalogue/category/books/")):
+            categories_url.append("https://books.toscrape.com/"+a["href"])
+    return categories_url
+    
