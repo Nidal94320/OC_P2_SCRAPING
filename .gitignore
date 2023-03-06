@@ -133,5 +133,8 @@ data/
 *.csv
 *.jpeg
 
-black formatter
+# .idea
+.idea/
+
+# black formatter
 

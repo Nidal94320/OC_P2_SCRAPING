@@ -1,5 +1,6 @@
 import csv
 import datetime
+import urllib.request
 
 from .list_Transformer import ET_category_pages
 from .list_Transformer import ET_books_url
@@ -21,7 +22,7 @@ def csv_Loader(books_data,num_cat):
         for line in books_data:
             writer.writerow(line)
 
-""" Extracts, Transfoms and Loads all books from one category into csv
+""" Extracts, Transfoms and Loads all books data from one category into csv and .jpeg
     def ETL_books_data(category_url)"""
 
 def ETL_books_data(category_url,num_cat):
@@ -29,6 +30,14 @@ def ETL_books_data(category_url,num_cat):
     books_url=ET_books_url(list_pages)
     books_data=ET_books_data(books_url)
     csv_Loader(books_data,num_cat)
+    num_book=0
+    for book in books_data:
+        num_book+=1
+        if num_book==len(books_data):
+            break
+        url_img_book=books_data[num_book][9]
+        urllib.request.urlretrieve(url_img_book,"./data/img/"+"Cat"+str(num_cat)+"_"+"Book"+str(num_book)+".jpeg")
+        
 
 """ Extracts, Transforms and Loads all books into csv by category 
     ETL()"""
