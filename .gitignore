@@ -129,9 +129,12 @@ dmypy.json
 .pyre/
 
 # data
-data/
+# data/
 *.csv
 *.jpeg
 
-black formatter
+# .idea
+.idea/
+
+# black formatter
 

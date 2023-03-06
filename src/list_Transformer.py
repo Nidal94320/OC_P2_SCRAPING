@@ -46,11 +46,11 @@ def extract_review_rating(soup):
 
 """ Some books haven't product description !"""
 
-def extract_product_description(find_product_description):
-    if find_product_description==True:
-        product_description=find_product_description.string
-    else:
-        product_description=""
+def extract_product_description(soup):
+    if soup.find("p",class_=False):
+        product_description=soup.find("p",class_=False).string
+    else :
+        product_description=''
     return product_description
 
 def list_Transformer(soup, url):
@@ -59,7 +59,7 @@ def list_Transformer(soup, url):
 
     title = soup.find("li", class_="active").string
 
-    product_description=extract_product_description(soup.find("p", class_=False))
+    product_description=extract_product_description(soup)
 
     universal_product_code = extract_universal_product_code(soup)
 
@@ -99,7 +99,7 @@ def ET_book_data(url):
     book_data = list_Transformer(soup, url)
     return book_data
 
-""" Checks, Extracts and Transforms category pages into list
+""" Checks "next" page presence, Extracts and Transforms category pages into list
     ET_category_pages(category_url)"""
 
 def ET_category_pages(category_url):
@@ -157,7 +157,7 @@ def ET_books_data(books_url):
         books_data.append(ET_book_data(book_page))
     return books_data
 
-""" Extracts and Transforms catogories url into list 
+""" Extracts and Transforms catogories url into list (homepage categories)
     ET_categories_url(home_page_url)"""
 
 def ET_categories_url(home_page_url):
