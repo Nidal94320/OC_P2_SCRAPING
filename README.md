@@ -67,13 +67,13 @@ cd data     # Pour accéder aux données des livres de chaque catégorie au form
 cd data/img # Pour accéder aux images des livres 
 
 ```
-## Running locally the python script (in en)
+## How running locally the python script (in en)
 
 #### 1. Open Shell
 
 #### 2. Navigate into a work directory (ex "my documents) :
 
-```bash
+```bash 
 # to navigate in a terminal:
   pwd               # print working directory
   ls                # list folder elements
