@@ -1,7 +1,7 @@
 
-# Process running ETL pipeline (fr/en)
+# Process running ETL pipeline 0.0.0 (fr/en)
 
-scraping script for https://books.toscrape.com/
+scraping script for https://books.toscrape.com/ (beta version)
 
 
 ## Comment executer en local le script python (en fr)
