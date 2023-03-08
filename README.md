@@ -1,20 +1,20 @@
 
 # Process running ETL pipeline (fr/en)
 
-scraping for https://books.toscrape.com/
+scraping script for https://books.toscrape.com/
 
 
-## Execution en local du script python (en fr)
+## Comment executer en local le script python (en fr)
 
 #### 1. Ouvrir un Terminal : "PowerShell" sous Windows et "Terminal" sous Mac
 
-#### 2. Se placer dans un répertoire de travail (ex "mes documents")
+#### 2. Se placer dans un répertoire de travail (ex "mes documents") :
 
 ```bash
 # navigation dans un terminal :
   pwd               # affiche le repertoire de travail
-  ls                # liste les éléments contenu dans répertoire
-  cd ..             # permet remonter au dossier parent
+  ls                # liste les éléments contenus dans répertoire
+  cd ..             # permet de remonter au dossier parent
   cd 'name_dossier' # permet d'accéder à un dossier fils
 ```
 
@@ -48,13 +48,13 @@ env/Scripts/activate # sous Windows
 source env/bin/activate # sous Mac
 
 ```
-#### 8. Installer les packages Python 
+#### 8. Installer les packages Python :
 
 ```bash
 pip install –r requirements.txt
 
 ```
-#### 9. Exécuter le script en entrant la commande "python main.py" (patienter 5-10mn jusqu’à la fin de l’exécution)
+#### 9. Exécuter le script en entrant la commande "python main.py" (patienter 5-10mn jusqu’à la fin de l’exécution) :
 
 ```bash
 python main.py
