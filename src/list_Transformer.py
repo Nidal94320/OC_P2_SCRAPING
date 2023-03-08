@@ -1,5 +1,18 @@
 from .html_Extractor import html_Extractor
 
+HEADER = [
+    "category",
+    "title",
+    "product_description",
+    "universal_product_code",
+    "number_available",
+    "review_rating",
+    "price_excluding_tax",
+    "price_including_tax",
+    "product_page_url",
+    "image_url",
+]
+
 def extract_category(soup):
     category = soup.find_all("a", href=True)
     for balise in category:
@@ -8,13 +21,11 @@ def extract_category(soup):
 
     return category
 
-
 def extract_universal_product_code(soup):
     all_td = soup.find_all("td")
     universal_product_code = all_td[0].string
 
     return universal_product_code
-
 
 def extract_price_excluding_tax(soup):
     all_td = soup.find_all("td")
@@ -22,20 +33,17 @@ def extract_price_excluding_tax(soup):
 
     return price_excluding_tax
 
-
 def extract_price_including_tax(soup):
     all_td = soup.find_all("td")
     price_including_tax = all_td[3].string.replace("£", "")
 
     return price_including_tax
 
-
 def extract_number_available(soup):
     all_td = soup.find_all("td")
     number_available = all_td[5].string
 
     return number_available
-
 
 def extract_review_rating(soup):
     review_rating = soup.find("p", class_="star-rating")
@@ -51,7 +59,6 @@ def extract_review_rating(soup):
         review_rating = "5"
 
     return review_rating
-
 
 def extract_product_description(soup):
     """ Some books haven't product description !"""
@@ -95,8 +102,11 @@ def list_Transformer(soup, url):
 
 
 def ET_book_data(url):
-    """ Extracts and Transforms book's html data into list
-    ET_book(url) """
+    """ Extracts and Transforms one book's html data into list
+    ET_book(url) 
+    input : an url book page
+    output : book_data [] 
+    """
 
     soup = html_Extractor(url)
     book_data = list_Transformer(soup, url)
@@ -104,8 +114,37 @@ def ET_book_data(url):
     return book_data
 
 
+def ET_books_data(books_url):
+    """ Extracts and Transforms several books html data into list
+    ET_books_data(books_url)
+    input : books_url [] (which is an url list of several book pages)
+    output : book_data [] 
+    """
+
+    books_data=[]
+    books_data.append(HEADER)
+    for book_page in books_url:
+        books_data.append(ET_book_data(book_page))
+
+    return books_data
+
+
+def ET_categories_url(home_page_url):
+    """ Extracts and Transforms catogories homepages url into list
+    ET_categories_url(home_page_url)
+    """
+    
+    soup=html_Extractor(home_page_url)
+    all_a=soup.find_all("a")
+    categories_url=[]
+    for a in all_a:
+        if(a["href"].startswith("catalogue/category/books/")):
+            categories_url.append("https://books.toscrape.com/"+a["href"])
+
+    return categories_url
+
 def ET_category_pages(category_url):
-    """ Checks "next" page presence, Extracts and Transforms category pages into list
+    """ Extracts and Transforms one category pages into list
     ET_category_pages(category_url)"""
 
     soup=html_Extractor(category_url)
@@ -133,41 +172,4 @@ def ET_books_url(list_pages):
 
     return books_url
 
-HEADER = [
-    "category",
-    "title",
-    "product_description",
-    "universal_product_code",
-    "number_available",
-    "review_rating",
-    "price_excluding_tax",
-    "price_including_tax",
-    "product_page_url",
-    "image_url",
-]
-
-def ET_books_data(books_url):
-    """ Extracts and Transforms data from books url into list
-    ET_books_data(books_url)"""
-
-    books_data=[]
-    books_data.append(HEADER)
-    for book_page in books_url:
-        books_data.append(ET_book_data(book_page))
-
-    return books_data
-
-
-def ET_categories_url(home_page_url):
-    """ Extracts and Transforms catogories url into list (homepage categories)
-    ET_categories_url(home_page_url)"""
-    
-    soup=html_Extractor(home_page_url)
-    all_a=soup.find_all("a")
-    categories_url=[]
-    for a in all_a:
-        if(a["href"].startswith("catalogue/category/books/")):
-            categories_url.append("https://books.toscrape.com/"+a["href"])
-
-    return categories_url
     
